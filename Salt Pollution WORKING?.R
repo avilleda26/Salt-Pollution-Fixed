@@ -1,28 +1,44 @@
-
-
 library(readxl)
+df <- read_excel(file.choose())
+
 library(dplyr)
-
-
-file_path <- "Consulting_ClassUMBS_Mesocosm_Biochar_NaCl_Master_Data_2025aug27.xlsx"
-
-df <- read_excel(file_path)
-
 
 df <- df %>%
   mutate(
-    tankSize = as.factor(tankSize),
-    biocharRate_trt = as.factor(biocharRate_trt),
-    saltRate_trt = as.factor(saltRate_trt),
-    treatment = as.factor(treatment),
-    year = as.integer(year),
-    month = as.integer(month),
-    jdate = as.integer(jdate)
+    tankID = factor(tankID),
+    tankSize = factor(tankSize),
+    biocharRate_trt = factor(biocharRate_trt),
+    saltRate_trt = factor(saltRate_trt),
+    treatment = factor(treatment),
+    year = factor(year),
+    month = factor(month)
   )
 
-# Quick check
-str(df)
-head(df)
+library(ggplot2)
+
+#Distribution of Cattail Biomass
+
+ggplot(df, aes(x = typhaBiomass_g)) +
+  geom_histogram(bins = 30) +
+  labs(
+    x = "Typha biomass (g)",
+    y = "Count",
+    title = "Distribution of cattail biomass"
+  )
+
+#Mean Biomass by Salt Treatment
+
+ggplot(df, aes(x = saltRate_trt, y = typhaBiomass_g)) +
+  stat_summary(fun = mean, geom = "bar") +
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.2) +
+  labs(
+    x = "Salt treatment",
+    y = "Mean Typha biomass (g)",
+    title = "Mean cattail biomass by salt treatment"
+  )
 
 
- 
+
+
+
+
