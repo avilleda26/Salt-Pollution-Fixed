@@ -1,0 +1,43 @@
+testing
+Eleanor was here.
+
+ghghg
+push attempt 
+
+
+#Open Data
+library(readxl)
+salt.pollution = read_excel(file.choose())
+str(salt.pollution)
+head(salt.pollution)
+
+#plots biomass by tank over years
+library(ggplot2)
+library(dplyr)
+
+salt.pollution <- salt.pollution
+ggplot(salt.pollution,aes(x = tankID, y = typhaBiomass_g, color = year)) + geom_point(alpha = 0.7, size = 2) + labs(title = "Typha Biomass by Tank ID (Colored by Year)",x = "Tank ID",y = "Typha biomass (g/m²)",color = "Year") + theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+#Hypothesis test on tank size significance
+salt.pollution <- salt.pollution
+tanksize_anova <- aov(typhaBiomass_g ~ tankSize, data = salt.pollution)
+summary(tanksize_anova)
+
+TukeyHSD(tanksize_anova)
+
+ggplot(salt.pollution,aes(x = tankSize, y = typhaBiomass_g)) + geom_boxplot(alpha = 0.7) + labs(title = "Effect of Tank Size on Typha Biomass",x = "Tank size",y = "Typha biomass (g/m²)") + theme_minimal()
+
+#Tank size is NOT significant
+
+#Hypothesis test on biomass and salt
+salt.pollution <- salt.pollution
+saltrate_anova <- aov(typhaBiomass_g ~ saltRate_trt, data = salt.pollution)
+summary(saltrate_anova)
+
+TukeyHSD(saltrate_anova)
+
+ggplot(salt.pollution,aes(x = saltRate_trt, y = typhaBiomass_g)) + geom_boxplot(alpha = 0.7) + labs(title = "Effect of Tank Size on Typha Biomass",x = "Tank size",y = "Typha biomass (g/m²)") + theme_minimal()
+
+#Salt Rate is significant - shown by anova 
+
+
