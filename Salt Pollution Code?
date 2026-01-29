@@ -44,8 +44,24 @@ ggplot(salt.pollution, aes(x = saltRate_trt, y = typhaBiomass_g, group = year, c
 stat_summary(fun = mean, geom = "point", size = 2) + labs(title = "Mean Typha Biomass by Salt Rate and Year", x = "Salt Rate Treatment", y = "Mean Typha Biomass (g/m²)", color = "Year") +
 theme_minimal()
 
+#filter out which tanks got the salt treatments, none, mix
 
+#plot biomass by month date 
+library(dplyr)
+library(ggplot2)
 
+sumdat <- df
+group_by(year, month)
+summarise(n = sum(!is.na(typhaBiomass_g) & !is.na(tankArea_m2) & tankArea_m2 > 0), mean_biomass_g_m2 = mean(typhaBiomass_g / tankArea_m2, na.rm = TRUE), se_biomass_g_m2   = sd(typhaBiomass_g / tankArea_m2,  na.rm = TRUE) / sqrt(n), .groups = "drop")
+
+#Averaged
+ggplot(sumdat, aes(x = factor(month, levels = sort(unique(month))), y = mean_biomass_g_m2)) + geom_col() + geom_errorbar(aes(ymin = mean_biomass_g_m2 - se_biomass_g_m2, ymax = mean_biomass_g_m2 + se_biomass_g_m2), width = 0.2) + facet_wrap(~ year) +
+labs(x = "Month", y = "Mean Typha biomass (g/m^2) ± SE",title = "Typha biomass by month, separated by year (standardized by tank area)") +
+theme_minimal()
+
+ggplot(df, aes(x = factor(month, levels = sort(unique(month))),y = typhaBiomass_g / tankArea_m2)) + geom_jitter(width = 0.15, height = 0) + facet_wrap(~ year) +
+labs(x = "Month", y = "Typha biomass (g/m^2)",title = "Raw Typha biomass by month, separated by year (standardized by tank area)") +
+theme_minimal()
 
 
 
