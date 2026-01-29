@@ -6,7 +6,7 @@ push attempt
 
 #Open Data
 library(readxl)
-salt.pollution = read_excel(file.choose())
+df <- read_excel("~/Downloads/Consulting370.xlsx") 
 str(salt.pollution)
 head(salt.pollution)
 
@@ -38,6 +38,13 @@ TukeyHSD(saltrate_anova)
 ggplot(salt.pollution,aes(x = saltRate_trt, y = typhaBiomass_g)) + geom_boxplot(alpha = 0.7) + labs(title = "Effect of Tank Size on Typha Biomass",x = "Tank size",y = "Typha biomass (g/m²)") + theme_minimal()
 
 #Salt Rate is significant - shown by anova 
+
+#Chart of biomass by salt rate by year
+ggplot(salt.pollution, aes(x = saltRate_trt, y = typhaBiomass_g, group = year, color = year)) + stat_summary(fun = mean, geom = "line", linewidth = 1) +
+stat_summary(fun = mean, geom = "point", size = 2) + labs(title = "Mean Typha Biomass by Salt Rate and Year", x = "Salt Rate Treatment", y = "Mean Typha Biomass (g/m²)", color = "Year") +
+theme_minimal()
+
+
 
 
 
