@@ -1,5 +1,6 @@
 library(readxl)
-df <- read_excel(file.choose())
+df <- read_excel("./Consulting_ClassUMBS_Mesocosm_Biochar_NaCl_Master_Data_2025aug27.xlsx")
+
 
 library(dplyr)
 
