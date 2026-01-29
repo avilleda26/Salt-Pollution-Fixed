@@ -39,7 +39,26 @@ ggplot(df, aes(x = saltRate_trt, y = typhaBiomass_g)) +
   )
 
 
+#Biochar x Salt interaction
 
+ggplot(df, aes(x = saltRate_trt, y = typhaBiomass_g, color = biocharRate_trt)) +
+  stat_summary(fun = mean, geom = "point") +
+  stat_summary(fun = mean, geom = "line", aes(group = biocharRate_trt)) +
+  labs(
+    x = "Salt treatment",
+    y = "Mean Typha biomass (g)",
+    color = "Biochar rate",
+    title = "Biochar × salt effects on cattail biomass"
+  )
 
+#Biomass through time
+
+ggplot(df, aes(x = year, y = typhaBiomass_g, group = tankID)) +
+  geom_line(alpha = 0.3) +
+  labs(
+    x = "Year",
+    y = "Typha biomass (g)",
+    title = "Cattail biomass trajectories by tank"
+  )
 
 
